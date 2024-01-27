@@ -1,0 +1,25 @@
+Évaluation de l'Architecture Actuelle
+
+Utilisation d'une Pile dans le Modèle de Calculette :
+
+Avantages : L'adoption d'une pile pour le traitement interne est judicieuse, alignée sur la logique "Dernier entré, Premier sorti" (DEPS) de la calculatrice, ce qui est bénéfique pour les opérations de calcul.
+
+Limites : Le modèle pourrait être amélioré pour encapsuler plus efficacement la logique spécifique (tel que le traitement des opérations mathématiques, la validation des saisies).
+
+Gestion des Écouteurs d'Événements dans le Contrôleur :
+
+Avantages : Conserver les écouteurs d'événements au sein du contrôleur favorise une nette séparation des fonctions. Le contrôleur sert d'intermédiaire entre la vue et le modèle, gérant les interactions de l'utilisateur.
+
+Limites : Cette méthode risque de surcharger le contrôleur, le rendant complexe à gérer, surtout si l'application s'élargit. Une stratégie plus modulaire ou l'adoption de sous-contrôleurs pourrait être avantageuse.
+
+Structure basée sur le Modèle-Vue-Contrôleur (MVC) :
+
+Avantages : L'architecture MVC contribue à une organisation limpide du code, simplifiant la maintenance et les tests. Chaque élément remplit une fonction spécifique.
+
+Limites : Dans l'implémentation actuelle, la délimitation des rôles peut être améliorée. Par exemple, la vue pourrait se limiter strictement à l'affichage des données.
+
+Modèle (M) : La classe Calculette, intégrant une pile et la logique de calcul, s'occupe des opérations mathématiques et de la validation des entrées, tout en gérant l'état de la calculatrice.
+
+Vue (V) : La classe VueCalculette se charge exclusivement de la présentation des informations issues du modèle et transmet les actions de l'utilisateur au contrôleur.
+
+Contrôleur (C) : La classe ControleurCalculette orchestre les échanges entre la vue et le modèle. Elle répond aux événements de la vue, interagit avec le modèle et actualise la vue.

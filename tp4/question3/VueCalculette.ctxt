@@ -1,0 +1,6 @@
+#BlueJ class context
+comment0.target=VueCalculette
+comment0.text=\r\n\ Description\ of\ class\ VueCalculette.\r\n\r\n\ @author\ marounmelhem\r\n\ @version\ 27-01-2024\r\n
+comment1.params=o\ arg
+comment1.target=void\ update(java.util.Observable,\ java.lang.Object)
+numComments=2

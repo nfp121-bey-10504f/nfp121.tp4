@@ -1,0 +1,8 @@
+#BlueJ class context
+comment0.target=Vue2
+comment0.text=\r\n\ Vue2\ Class.\r\n\r\n\ @author\ marounmelhem\r\n\ @version\ 27-01-2024\r\n
+comment1.params=pile
+comment1.target=Vue2(PileModele)
+comment2.params=obs\ arg
+comment2.target=void\ update(java.util.Observable,\ java.lang.Object)
+numComments=3
