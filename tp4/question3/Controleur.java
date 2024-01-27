@@ -9,10 +9,9 @@ import javax.swing.*;
 import java.awt.event.*;
 
 /**
- * Décrivez votre classe Controleur ici.
- * 
- * @author (votre nom)
- * @version (un numéro de version ou une date)
+ * Classe Controleur.
+ * @author marounmelhem
+ * @version 27-01-2024
  */
 public class Controleur extends JPanel {
 
@@ -34,30 +33,124 @@ public class Controleur extends JPanel {
 
         setLayout(new GridLayout(2, 1));
         add(donnee);
-        donnee.addActionListener(null /* null est à remplacer */);
         JPanel boutons = new JPanel();
         boutons.setLayout(new FlowLayout());
-        boutons.add(push);  push.addActionListener(null /* null est à remplacer */);
-        boutons.add(add);   add.addActionListener(null /* null est à remplacer */);
-        boutons.add(sub);   sub.addActionListener(null /* null est à remplacer */);
-        boutons.add(mul);   mul.addActionListener(null /* null est à remplacer */);
-        boutons.add(div);   div.addActionListener(null /* null est à remplacer */);
-        boutons.add(clear); clear.addActionListener(null /* null est à remplacer */);
+
+        boutons.add(push);
+        boutons.add(add);
+        boutons.add(sub);
+        boutons.add(mul);
+        boutons.add(div);
+        boutons.add(clear);
         add(boutons);
         boutons.setBackground(Color.red);
+
+        addActionListeners();
         actualiserInterface();
     }
 
+    private void addActionListeners() {
+        donnee.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    Integer value = operande();
+                    pile.empiler(value);
+                    donnee.setText("");
+                    actualiserInterface();
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "Invalid Number Format");
+                } catch (PilePleineException ex) {
+                    JOptionPane.showMessageDialog(null, "Stack Full");
+                }
+            }
+        });
+        push.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    Integer value = operande();
+                    pile.empiler(value);
+                    donnee.setText("");
+                    actualiserInterface();
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "Invalid Number Format");
+                } catch (PilePleineException ex) {
+                    JOptionPane.showMessageDialog(null, "Stack Full");
+                }
+            }
+        });
+
+        add.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                performOperation((a, b) -> a + b);
+            }
+        });
+
+        sub.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                performOperation((a, b) -> a - b);
+            }
+        });
+
+        mul.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                performOperation((a, b) -> a * b);
+            }
+        });
+
+        div.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                performOperation((a, b) -> {
+                    if (b == 0) throw new ArithmeticException("Division by Zero");
+                    return a / b;
+                });
+            }
+        });
+
+        clear.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                while (!pile.estVide()) {
+                    try {
+                        pile.depiler();
+                    } catch (PileVideException ignored) {
+                    }
+                }
+                actualiserInterface();
+            }
+        });
+    }
+
+    private void performOperation(BinaryOperator<Integer> operation) {
+        try {
+            if (pile.taille() < 2) throw new Exception("Not enough elements");
+            Integer b = pile.depiler();
+            Integer a = pile.depiler();
+            pile.empiler(operation.apply(a, b));
+            actualiserInterface();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+    }
+
+    private interface BinaryOperator<T> {
+        T apply(T a, T b) throws Exception;
+    }
+
     public void actualiserInterface() {
-        // à compléter
+        boolean enableOperations = pile.taille() >= 2;
+        add.setEnabled(enableOperations);
+        sub.setEnabled(enableOperations);
+        mul.setEnabled(enableOperations);
+        div.setEnabled(enableOperations);
+        clear.setEnabled(!pile.estVide());
     }
 
     private Integer operande() throws NumberFormatException {
         return Integer.parseInt(donnee.getText());
     }
 
+
     // à compléter
-    // en cas d'exception comme division par zéro, 
+    // en cas d'exception comme division par zéro,
     // mauvais format de nombre suite à l'appel de la méthode operande
     // la pile reste en l'état (intacte)
 
